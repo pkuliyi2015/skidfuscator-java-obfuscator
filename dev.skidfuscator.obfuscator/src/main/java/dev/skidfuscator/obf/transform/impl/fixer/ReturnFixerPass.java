@@ -20,8 +20,9 @@ public class ReturnFixerPass implements FlowPass {
         for (SkidGraph methodNode : method.getMethodNodes()) {
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
 
         }

@@ -30,8 +30,9 @@ public class IntegerBasedSeed extends AbstractSeed<Integer> {
 
     @Override
     public void renderPrivate(final MethodNode methodNodes, final ControlFlowGraph cfg) {
-        if (methodNodes.isAbstract())
+        if (methodNodes.isAbstract()) {
             return;
+        }
 
         final boolean free = false && parent.getCallerType() == CallerType.APPLICATION;
 
@@ -68,12 +69,14 @@ public class IntegerBasedSeed extends AbstractSeed<Integer> {
         final boolean free = false && parent.getCallerType() == CallerType.APPLICATION;
 
         for (SkidGraph methodNode : methodNodes) {
-            if (methodNode.getNode().isAbstract())
+            if (methodNode.getNode().isAbstract()) {
                 continue;
+            }
 
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             if (free) {
                 /*
@@ -108,8 +111,9 @@ public class IntegerBasedSeed extends AbstractSeed<Integer> {
             }
         }
 
-        if (!free)
+        if (!free) {
             return;
+        }
 
         parent.getParameter().addParameter(Type.INT_TYPE);
         /*for (SkidGraph methodNode : methodNodes) {

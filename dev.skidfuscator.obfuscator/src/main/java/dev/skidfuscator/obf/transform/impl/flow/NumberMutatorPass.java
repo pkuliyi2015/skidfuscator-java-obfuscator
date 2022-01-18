@@ -27,28 +27,34 @@ public class NumberMutatorPass implements FlowPass {
     @Override
     public void pass(SkidSession session, SkidMethod method) {
         for (SkidGraph methodNode : method.getMethodNodes()) {
-            if (methodNode.getNode().isAbstract() || methodNode.isInit())
+            if (methodNode.getNode().isAbstract() || methodNode.isInit()) {
                 continue;
+            }
 
-            if (methodNode.getNode().node.instructions.size() > 10000)
+            if (methodNode.getNode().node.instructions.size() > 10000) {
                 continue;
+            }
 
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             for (CodeUnit codeUnit : cfg.allExprStream().collect(Collectors.toList())) {
-                if (!(codeUnit instanceof Expr))
+                if (!(codeUnit instanceof Expr)) {
                     continue;
+                }
 
                 final Expr expr = (Expr) codeUnit;
-                if (!(expr instanceof ConstantExpr))
+                if (!(expr instanceof ConstantExpr)) {
                     continue;
+                }
 
                 final ConstantExpr constantExpr = (ConstantExpr) expr;
-                if (!types.contains(constantExpr.getType()))
+                if (!types.contains(constantExpr.getType())) {
                     continue;
+                }
 
                 final CodeUnit parent = expr.getParent();
                 final int index = parent.indexOf(constantExpr);

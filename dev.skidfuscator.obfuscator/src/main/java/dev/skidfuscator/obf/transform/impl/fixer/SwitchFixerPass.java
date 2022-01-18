@@ -24,13 +24,15 @@ public class SwitchFixerPass implements FlowPass {
         for (SkidGraph methodNode : method.getMethodNodes()) {
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             for (BasicBlock vertex : new HashSet<>(cfg.vertices())) {
                 for (Stmt stmt : vertex) {
-                    if (!(stmt instanceof SwitchStmt))
+                    if (!(stmt instanceof SwitchStmt)) {
                         continue;
+                    }
                     
                     final SwitchStmt switchStmt = (SwitchStmt) stmt;
                     final BasicBlock block = new BasicBlock(cfg);

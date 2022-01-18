@@ -37,8 +37,9 @@ public class AhegaoPass implements ProjectPass {
     @Override
     public void pass(SkidSession session) {
         for (ClassNode classNode : session.getClassSource().iterate()) {
-            if (classNode.isEnum() || (classNode.node.access & Opcodes.ACC_INTERFACE) != 0)
+            if (classNode.isEnum() || (classNode.node.access & Opcodes.ACC_INTERFACE) != 0) {
                 continue;
+            }
 
             final org.objectweb.asm.tree.FieldNode fieldNode = new org.objectweb.asm.tree.FieldNode(
                     Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC,
@@ -124,8 +125,9 @@ public class AhegaoPass implements ProjectPass {
 
             while (stmt != null) {
                 cfg.getEntries().iterator().next().add(0, stmt);
-                if (stack.isEmpty())
+                if (stack.isEmpty()) {
                     break;
+                }
                 stmt = stack.pop();
             }
 

@@ -26,13 +26,15 @@ public class SwitchMutatorPass implements FlowPass {
     @Override
     public void pass(SkidSession session, SkidMethod method) {
         for (SkidGraph methodNode : method.getMethodNodes()) {
-            if (methodNode.getNode().isAbstract() || methodNode.isInit())
+            if (methodNode.getNode().isAbstract() || methodNode.isInit()) {
                 continue;
+            }
 
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             for (BasicBlock vertex : cfg.vertices()) {
                 for (Stmt stmt : new HashSet<>(vertex)) {
@@ -86,8 +88,9 @@ public class SwitchMutatorPass implements FlowPass {
                                     .filter(e -> {
                                         final BasicBlock block = hashedMap.get(e.value);
 
-                                        if (block == null)
+                                        if (block == null) {
                                             return false;
+                                        }
 
                                         return block == e.dst();
                                     }).collect(Collectors.toList());

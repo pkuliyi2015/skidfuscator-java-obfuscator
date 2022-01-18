@@ -33,8 +33,9 @@ public class SkidMethod {
         this.callerType = callerType;
         this.invocationModal = invocationModal;
 
-        if (methodNodes.isEmpty())
+        if (methodNodes.isEmpty()) {
             return;
+        }
         this.modal = this.methodNodes.get(0).getNode();
         this.parameter = new Parameter(modal.getDesc());
         this.classStatic = OpcodeUtil.isStatic(modal);
@@ -43,12 +44,15 @@ public class SkidMethod {
 
     public void renderPrivate(final SkidSession skidSession) {
         stackHeight = OpcodeUtil.getArgumentsSizes(this.getParameter().getDesc());
-        if (this.isStatic()) stackHeight -= 1;
+        if (this.isStatic()) {
+            stackHeight -= 1;
+        }
 
         for (SkidGraph methodNode : methodNodes) {
             final ControlFlowGraph cfg = skidSession.getCxt().getIRCache().get(methodNode.getNode());
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             seed.renderPrivate(methodNode.getNode(), cfg);
         }
@@ -68,8 +72,12 @@ public class SkidMethod {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SkidMethod that = (SkidMethod) o;
 

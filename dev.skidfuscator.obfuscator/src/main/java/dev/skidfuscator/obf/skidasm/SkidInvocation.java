@@ -12,12 +12,18 @@ public class SkidInvocation {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SkidInvocation that = (SkidInvocation) o;
 
-        if (methodNode != null ? !methodNode.equals(that.methodNode) : that.methodNode != null) return false;
+        if (methodNode != null ? !methodNode.equals(that.methodNode) : that.methodNode != null) {
+            return false;
+        }
         return invocationExpr != null ? invocationExpr.equals(that.invocationExpr) : that.invocationExpr == null;
     }
 

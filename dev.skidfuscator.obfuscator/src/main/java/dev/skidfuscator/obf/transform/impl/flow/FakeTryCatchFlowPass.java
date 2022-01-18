@@ -41,16 +41,19 @@ public class FakeTryCatchFlowPass implements FlowPass {
     @Override
     public void pass(SkidSession session, SkidMethod method) {
         for (SkidGraph methodNode : method.getMethodNodes()) {
-            if (methodNode.getNode().isAbstract())
+            if (methodNode.getNode().isAbstract()) {
                 continue;
+            }
 
-            if (methodNode.getNode().node.instructions.size() > 10000)
+            if (methodNode.getNode().node.instructions.size() > 10000) {
                 continue;
+            }
 
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             final Local local = cfg.getLocals().get(cfg.getEntries().size() + 2, true);
             for (BasicBlock entry : new HashSet<>(cfg.vertices())) {
@@ -68,16 +71,18 @@ public class FakeTryCatchFlowPass implements FlowPass {
                             .findFirst()
                             .orElse(null);
 
-                    if (edge == null)
+                    if (edge == null) {
                         continue;
+                    }
 
                     final ConditionalJumpStmt stmt = (ConditionalJumpStmt) _stmt;
 
                     final Expr right = stmt.getRight();
                     final Expr left = stmt.getLeft();
 
-                    if (right == null || left == null)
+                    if (right == null || left == null) {
                         continue;
+                    }
 
                     right.unlink();
                     left.unlink();

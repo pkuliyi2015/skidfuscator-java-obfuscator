@@ -45,17 +45,20 @@ public class FakeExceptionJumpFlowPass implements FlowPass {
     @Override
     public void pass(SkidSession session, SkidMethod method) {
         for (SkidGraph methodNode : method.getMethodNodes()) {
-            if (methodNode.getNode().isAbstract() || methodNode.getNode().node.instructions.size() > 10000)
+            if (methodNode.getNode().isAbstract() || methodNode.getNode().node.instructions.size() > 10000) {
                 continue;
+            }
 
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             for (BasicBlock entry : new HashSet<>(cfg.vertices())) {
-                if (entry.size() == 0)
+                if (entry.size() == 0) {
                     continue;
+                }
 
                 // Todo add hashing to amplify difficulty and remove key exposure
                 // Todo make this a better system
@@ -74,10 +77,11 @@ public class FakeExceptionJumpFlowPass implements FlowPass {
                 final FakeConditionalJumpStmt jump_stmt = new FakeConditionalJumpStmt(hash.getExpr(), var_const, fuckup, ConditionalJumpStmt.ComparisonType.NE);
                 final FakeConditionalJumpEdge<BasicBlock> jump_edge = new FakeConditionalJumpEdge<>(entry, fuckup, Opcodes.IF_ICMPNE);
 
-                if (entry.get(entry.size() - 1) instanceof UnconditionalJumpStmt)
+                if (entry.get(entry.size() - 1) instanceof UnconditionalJumpStmt) {
                     entry.add(entry.size() - 1, jump_stmt);
-                else
+                } else {
                     entry.add(jump_stmt);
+                }
                 cfg.addEdge(jump_edge);
 
                 session.count();

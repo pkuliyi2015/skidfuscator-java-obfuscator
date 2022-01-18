@@ -23,9 +23,10 @@ public class SkidBlock {
     public void addSeedLoader(final int index, final Local local, final int value, final int target) {
         final Expr load = NumberManager.encrypt(target, value, local);
         final Stmt set = new CopyVarStmt(new VarExpr(local, Type.INT_TYPE), load);
-        if (index < 0)
+        if (index < 0) {
             block.add(set);
-        else
+        } else {
             block.add(index, set);
+        }
     }
 }

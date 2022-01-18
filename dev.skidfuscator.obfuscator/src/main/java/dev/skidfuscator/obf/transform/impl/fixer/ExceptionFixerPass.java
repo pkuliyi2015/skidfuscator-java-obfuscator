@@ -21,12 +21,14 @@ public class ExceptionFixerPass implements FlowPass {
         for (SkidGraph methodNode : method.getMethodNodes()) {
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             for (ExceptionRange<BasicBlock> range : cfg.getRanges()) {
-                if (range.getTypes().size() <= 1)
+                if (range.getTypes().size() <= 1) {
                     continue;
+                }
 
                 ClassNode superType = null;
                 for (Type type : range.getTypes()) {

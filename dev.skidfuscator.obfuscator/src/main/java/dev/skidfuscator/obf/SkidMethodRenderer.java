@@ -10,6 +10,7 @@ import dev.skidfuscator.obf.transform.impl.fixer.ExceptionFixerPass;
 import dev.skidfuscator.obf.transform.impl.fixer.SwitchFixerPass;
 import dev.skidfuscator.obf.transform.impl.flow.*;
 import dev.skidfuscator.obf.transform.impl.kappa.AhegaoPass;
+import dev.skidfuscator.obf.transform.impl.kappa.AutoExpirePass;
 import dev.skidfuscator.obf.transform.impl.kappa.SuperDuperAgentPass;
 import dev.skidfuscator.obf.transform.impl.string.SimpleXorCipher;
 import dev.skidfuscator.obf.utils.ProgressUtil;
@@ -42,14 +43,21 @@ public class SkidMethodRenderer {
         logger.log("Beginning Skidfuscator 1.0.8...");
 
         final ProjectPass[] projectPasses = new ProjectPass[]{
-                new AhegaoPass()
+//                new AhegaoPass()
         };
 
         if (Skidfuscator.preventDump) {
-            logger.log("[*] Passing project passes...");
+            logger.log("[*] Passing anti-dump pass...");
             final ProjectPass projectPass  = new SuperDuperAgentPass();
             projectPass.pass(skidSession);
         }
+
+        if(Skidfuscator.expireTime){
+            logger.log("[*] Passing auto-expire pass...");
+            final ProjectPass projectPass = new AutoExpirePass();
+            projectPass.pass(skidSession);
+        }
+
 
         final List<ClassNode> nodeList = Streams.stream(skidSession.getClassSource().iterate())
                 .parallel()
@@ -133,8 +141,9 @@ public class SkidMethodRenderer {
 
                                 final SkidMethod skidMethod = skidMethodMap.get(method);
 
-                                if (skidMethod == null)
+                                if (skidMethod == null) {
                                     return;
+                                }
 
                                 for (MethodNode target : targets) {
                                     if (skidMethodMap.containsKey(target)) {
@@ -203,11 +212,13 @@ public class SkidMethodRenderer {
         skidMethods.parallelStream().forEach(e -> e.renderPrivate(skidSession));
         skidMethods.parallelStream().forEach(e -> {
             for (SkidGraph methodNode : e.getMethodNodes()) {
-                if (methodNode.getNode().isAbstract())
+                if (methodNode.getNode().isAbstract()) {
                     continue;
+                }
                 final ControlFlowGraph cfg = skidSession.getCxt().getIRCache().get(methodNode.getNode());
-                if (cfg == null)
+                if (cfg == null) {
                     continue;
+                }
 
                 methodNode.render(cfg);
             }
@@ -234,11 +245,13 @@ public class SkidMethodRenderer {
         try (ProgressBar progressBar = ProgressUtil.progress(skidMethods.size())) {
             new LinkedList<>(skidMethods).forEach(e -> {
                 e.getMethodNodes().forEach(methodNode -> {
-                    if (methodNode.getNode().isAbstract())
+                    if (methodNode.getNode().isAbstract()) {
                         return;
+                    }
                     final ControlFlowGraph cfg = skidSession.getCxt().getIRCache().get(methodNode.getNode());
-                    if (cfg == null)
+                    if (cfg == null) {
                         return;
+                    }
                     methodNode.postlinearize(cfg);
                 });
 

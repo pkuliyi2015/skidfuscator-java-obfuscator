@@ -43,12 +43,14 @@ public class FakeExceptionFlowPass implements SkidGraphTransformer {
     public void run(SkidSession skidSession, SkidGraph graph) {
         final ControlFlowGraph cfg = skidSession.getCxt().getIRCache().get(graph.getNode());
 
-        if (cfg == null)
+        if (cfg == null) {
             return;
+        }
 
         for (BasicBlock entry : new HashSet<>(cfg.vertices())) {
-            if (entry.size() == 0)
+            if (entry.size() == 0) {
                 continue;
+            }
 
             // Todo add hashing to amplify difficulty and remove key exposure
             // Todo make this a better system

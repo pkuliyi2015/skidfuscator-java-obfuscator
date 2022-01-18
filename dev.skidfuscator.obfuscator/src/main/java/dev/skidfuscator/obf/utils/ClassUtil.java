@@ -83,7 +83,9 @@ public class ClassUtil {
 			@Override
 			public MethodVisitor visitMethod(int access, String vname, String vdesc, String
 					signature, String[] exceptions) {
-				if (name.equals(vname) && vdesc.equals(desc)) contains[0] = true;
+				if (name.equals(vname) && vdesc.equals(desc)) {
+                    contains[0] = true;
+                }
 				return null;
 			}
 		}, SKIP_DEBUG | SKIP_CODE);
@@ -107,7 +109,9 @@ public class ClassUtil {
 			@Override
 			public FieldVisitor visitField(int access, String vname, String vdesc, String
 					signature, Object value) {
-				if (name.equals(vname) && vdesc.equals(desc)) contains[0] = true;
+				if (name.equals(vname) && vdesc.equals(desc)) {
+                    contains[0] = true;
+                }
 				return null;
 			}
 		}, SKIP_DEBUG | SKIP_CODE);
@@ -230,8 +234,9 @@ public class ClassUtil {
 			public FieldVisitor visitField(int access, String vname, String vdesc, String
 					signature, Object value) {
 				// Skip given field, effectively removing it
-				if (vname.endsWith(name) && vdesc.endsWith(desc))
-					return null;
+				if (vname.endsWith(name) && vdesc.endsWith(desc)) {
+                    return null;
+                }
 				return super.visitField(access, vname, vdesc, signature, value);
 			}
 		}, EXPAND_FRAMES);
@@ -257,8 +262,9 @@ public class ClassUtil {
 			public MethodVisitor visitMethod(int access, String vname, String vdesc, String
 					signature, String[] exceptions) {
 				// Skip given method, effectively removing it
-				if (vname.endsWith(name) && vdesc.endsWith(desc))
-					return null;
+				if (vname.endsWith(name) && vdesc.endsWith(desc)) {
+                    return null;
+                }
 				return super.visitMethod(access, vname, vdesc, signature, exceptions);
 			}
 		}, EXPAND_FRAMES);
@@ -311,18 +317,24 @@ public class ClassUtil {
 	 * @param to method to copy to.
 	 */
 	public static void copyMethodMetadata(MethodNode from, MethodNode to) {
-		if (to.invisibleAnnotations == null && from.invisibleAnnotations != null)
-			to.invisibleAnnotations = new ArrayList<>();
-		if (to.visibleAnnotations == null && from.visibleAnnotations != null)
-			to.visibleAnnotations = new ArrayList<>();
-		if (to.invisibleTypeAnnotations == null && from.invisibleTypeAnnotations != null)
-			to.invisibleTypeAnnotations = new ArrayList<>();
-		if (to.visibleTypeAnnotations == null && from.visibleTypeAnnotations != null)
-			to.visibleTypeAnnotations = new ArrayList<>();
-		if (to.invisibleLocalVariableAnnotations == null && from.invisibleLocalVariableAnnotations != null)
-			to.invisibleLocalVariableAnnotations = new ArrayList<>();
-		if (to.visibleLocalVariableAnnotations == null && from.visibleLocalVariableAnnotations != null)
-			to.visibleLocalVariableAnnotations = new ArrayList<>();
+		if (to.invisibleAnnotations == null && from.invisibleAnnotations != null) {
+            to.invisibleAnnotations = new ArrayList<>();
+        }
+		if (to.visibleAnnotations == null && from.visibleAnnotations != null) {
+            to.visibleAnnotations = new ArrayList<>();
+        }
+		if (to.invisibleTypeAnnotations == null && from.invisibleTypeAnnotations != null) {
+            to.invisibleTypeAnnotations = new ArrayList<>();
+        }
+		if (to.visibleTypeAnnotations == null && from.visibleTypeAnnotations != null) {
+            to.visibleTypeAnnotations = new ArrayList<>();
+        }
+		if (to.invisibleLocalVariableAnnotations == null && from.invisibleLocalVariableAnnotations != null) {
+            to.invisibleLocalVariableAnnotations = new ArrayList<>();
+        }
+		if (to.visibleLocalVariableAnnotations == null && from.visibleLocalVariableAnnotations != null) {
+            to.visibleLocalVariableAnnotations = new ArrayList<>();
+        }
 		updateAnnotationList(to.invisibleAnnotations, from.invisibleAnnotations);
 		updateAnnotationList(to.visibleAnnotations, from.visibleAnnotations);
 		updateAnnotationList(to.invisibleTypeAnnotations, from.invisibleTypeAnnotations);
@@ -391,8 +403,9 @@ public class ClassUtil {
 	 * @return Class bytecode, modified to remove all debug information.
 	 */
 	public static byte[] stripDebugForDecompile(byte[] code) {
-		if (code == null || code.length <= 10)
-			return code;
+		if (code == null || code.length <= 10) {
+            return code;
+        }
 		ClassReader cr = new ClassReader(code);
 		ClassWriter cw = new ClassWriter(0);
 		cr.accept(cw, SKIP_DEBUG | EXPAND_FRAMES);
@@ -408,8 +421,9 @@ public class ClassUtil {
 	 * @return {@code true} when the class can be read by ASM.
 	 */
 	public static boolean isValidClass(byte[] value) {
-		if (!isClass(value))
-			return false;
+		if (!isClass(value)) {
+            return false;
+        }
 		try {
 			getNode(new ClassReader(value), SKIP_FRAMES);
 			return true;

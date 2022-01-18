@@ -86,8 +86,9 @@ public class DefaultMethodInvokerResolver implements MethodInvokerResolver {
 
                     try {
                         ex.resolveTargets(app.getCxt().getInvocationResolver()).forEach(target -> {
-                            if (target == null)
+                            if (target == null) {
                                 return;
+                            }
 
                             final Set<MethodNode> callers = app.getCxt().getInvocationResolver()
                                     .getHierarchyMethodChain(target.owner, target.getName(), target.getDesc(), false);

@@ -15,8 +15,9 @@ public class SeedFlowPass implements FlowPass {
     @Override
     public void pass(SkidSession session, SkidMethod method) {
         for (SkidGraph methodNode : method.getMethodNodes()) {
-            if (methodNode.getNode().isAbstract())
+            if (methodNode.getNode().isAbstract()) {
                 continue;
+            }
 
             //run(session.getCxt().getIRCache().get(methodNode));
         }

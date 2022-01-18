@@ -71,8 +71,9 @@ public class SStorage {
                 for (MethodNode method : c.getMethods()) {
                     final ControlFlowGraph cfg = session.getCxt().getIRCache().get(method);
 
-                    if (cfg == null)
+                    if (cfg == null) {
                         continue;
+                    }
 
                     cfg.allExprStream()
                             .parallel()

@@ -94,8 +94,9 @@ public class ModernMethodInvokerResolver implements MethodInvokerResolver {
                 .map(e -> (InvocationExpr) e)
                 .forEach(ex -> {
                     final ClassNode classNode = app.getCxt().getApplication().findClassNode(ex.getOwner());
-                    if (classNode == null)
+                    if (classNode == null) {
                         return;
+                    }
 
 
         });

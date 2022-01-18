@@ -189,8 +189,9 @@ public class PhantomJarDownloader<C extends ClassNode> extends AbstractJarDownlo
 			phantom.getGenerated().forEach((k, v) -> {
 				final ClassNode classNode = ClassHelper.create(decorate(v));
 
-				if (namedMap.containsKey(classNode.getName()))
-					return;
+				if (namedMap.containsKey(classNode.getName())) {
+                    return;
+                }
 
 				phantomContents.getClassContents().add((C) classNode);
 				progressBar.step();
@@ -256,10 +257,12 @@ public class PhantomJarDownloader<C extends ClassNode> extends AbstractJarDownlo
 			ClassHierarchy hierarchy = new IncrementalClassHierarchy();
 			for (Enumeration<JarEntry> e = file.entries(); e.hasMoreElements(); ) {
 				JarEntry entry = e.nextElement();
-				if (entry.isDirectory())
-					continue;
-				if (!entry.getName().endsWith(".class"))
-					continue;
+				if (entry.isDirectory()) {
+                    continue;
+                }
+				if (!entry.getName().endsWith(".class")) {
+                    continue;
+                }
 				try (InputStream stream = file.getInputStream(entry)) {
 					ClassReader reader = new ClassReader(stream);
 					String[] ifaceNames = reader.getInterfaces();
@@ -267,8 +270,9 @@ public class PhantomJarDownloader<C extends ClassNode> extends AbstractJarDownlo
 					Type superclass = reader.getSuperName() == null ?
 							TypeUtil.OBJECT_TYPE : Type.getObjectType(reader.getSuperName());
 					Type[] ifaces = new Type[ifaceNames.length];
-					for (int i = 0; i < ifaces.length; i++)
-						ifaces[i] = Type.getObjectType(ifaceNames[i]);
+					for (int i = 0; i < ifaces.length; i++) {
+                        ifaces[i] = Type.getObjectType(ifaceNames[i]);
+                    }
 					// Add type to hierarchy
 					boolean isInterface = (reader.getAccess() & Opcodes.ACC_INTERFACE) != 0;
 					try {

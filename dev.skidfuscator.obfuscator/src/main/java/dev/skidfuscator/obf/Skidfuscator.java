@@ -5,12 +5,11 @@ import dev.skidfuscator.obf.init.DefaultInitHandler;
 import dev.skidfuscator.obf.init.SkidSession;
 import dev.skidfuscator.obf.utils.MapleJarUtil;
 import org.mapleir.deob.PassGroup;
-import org.mapleir.ir.code.expr.InstanceofExpr;
+
 
 import java.io.File;
 import java.time.Instant;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * @author Ghast
@@ -38,7 +37,8 @@ public class Skidfuscator {
     }
 
     // Temp workaround
-    public static boolean preventDump;
+    public static boolean preventDump = false;
+    public static boolean expireTime = false;
 
     public void init() {
         if (args.length < 1) {
@@ -46,12 +46,15 @@ public class Skidfuscator {
             System.exit(1);
             return;
         }
+        TreeSet<String> parsedArgs = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        parsedArgs.addAll(Arrays.asList(args));
 
-        // Todo: Actually add an CLI
-        if (args.length > 1) {
-            if (args[1].equalsIgnoreCase("--antidump")) {
-                preventDump = true;
-            }
+        if(parsedArgs.contains("--antidump")) {
+            preventDump = true;
+        }
+
+        if(parsedArgs.contains("--autoexpire")){
+            expireTime = true;
         }
 
         final String[] logo = new String[] {

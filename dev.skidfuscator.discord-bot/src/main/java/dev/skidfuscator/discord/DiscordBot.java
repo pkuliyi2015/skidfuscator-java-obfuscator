@@ -270,8 +270,9 @@ public class DiscordBot {
                 if (e instanceof MessageReceivedEvent) {
                     final MessageReceivedEvent event = (MessageReceivedEvent) e;
 
-                    if (!event.getMessage().getContentDisplay().equalsIgnoreCase("!skidthis"))
+                    if (!event.getMessage().getContentDisplay().equalsIgnoreCase("!skidthis")) {
                         return;
+                    }
 
                     if (event.getMessage().getAttachments().isEmpty()) {
                         event.getMessage().getChannel().sendMessage(new MessageBuilder()

@@ -30,17 +30,20 @@ public class ConditionV2MutatorPass implements FlowPass {
     @Override
     public void pass(SkidSession session, SkidMethod method) {
         for (SkidGraph methodNode : method.getMethodNodes()) {
-            if (methodNode.getNode().isAbstract() || methodNode.isInit())
+            if (methodNode.getNode().isAbstract() || methodNode.isInit()) {
                 continue;
+            }
 
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             for (BasicBlock parent : new HashSet<>(cfg.vertices())) {
-                if (parent.size() == 0)
+                if (parent.size() == 0) {
                     continue;
+                }
 
                 for (Stmt stmt : new HashSet<>(parent)) {
                     if (!(stmt instanceof ConditionalJumpStmt)) {
@@ -49,16 +52,18 @@ public class ConditionV2MutatorPass implements FlowPass {
 
                     final ConditionalJumpStmt jumpStmt = (ConditionalJumpStmt) stmt;
 
-                    if (!jumpStmt.getComparisonType().equals(ConditionalJumpStmt.ComparisonType.EQ))
+                    if (!jumpStmt.getComparisonType().equals(ConditionalJumpStmt.ComparisonType.EQ)) {
                         continue;
+                    }
 
                     final SkidBlock mutatedBlock = methodNode.getBlock(parent);
 
                     final Expr right = jumpStmt.getRight();
                     final Expr left = jumpStmt.getLeft();
 
-                    if (right == null || left == null)
+                    if (right == null || left == null) {
                         continue;
+                    }
 
                     right.unlink();
                     left.unlink();

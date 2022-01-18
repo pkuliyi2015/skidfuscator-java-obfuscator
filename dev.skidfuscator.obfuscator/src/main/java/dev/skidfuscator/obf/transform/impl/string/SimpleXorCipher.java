@@ -50,13 +50,15 @@ public class SimpleXorCipher implements FlowPass {
     @Override
     public void pass(SkidSession session, SkidMethod method) {
         for (SkidGraph methodNode : method.getMethodNodes()) {
-            if (methodNode.getNode().isAbstract() || methodNode.isInit())
+            if (methodNode.getNode().isAbstract() || methodNode.isInit()) {
                 continue;
+            }
 
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             final List<ConstantExpr> stringList = cfg.allExprStream()
                     .filter(e -> e instanceof ConstantExpr)
@@ -64,8 +66,9 @@ public class SimpleXorCipher implements FlowPass {
                     .filter(e -> e.getConstant() instanceof String)
                     .collect(Collectors.toList());
 
-            if (stringList.isEmpty())
+            if (stringList.isEmpty()) {
                 continue;
+            }
 
             final ClassNode parent = methodNode.getNode().owner;
 
@@ -77,8 +80,9 @@ public class SimpleXorCipher implements FlowPass {
             for (ConstantExpr constantExpr : stringList) {
                 final CodeUnit parentExpr = constantExpr.getParent();
 
-                if (parentExpr instanceof DynamicInvocationExpr || parentExpr instanceof InitialisedObjectExpr)
+                if (parentExpr instanceof DynamicInvocationExpr || parentExpr instanceof InitialisedObjectExpr) {
                     continue;
+                }
 
                 final BasicBlock block = constantExpr.getBlock();
                 final SkidBlock skidBlock = methodNode.getBlock(block);
@@ -97,7 +101,9 @@ public class SimpleXorCipher implements FlowPass {
 
                 session.count();
 
-                parentExpr.overwrite(constantExpr, invocation);
+                int index = parentExpr.indexOf(constantExpr);
+                constantExpr.setParent(null);
+                parentExpr.writeAt(invocation,index);
 
                 /*if (parentExpr instanceof InvocationExpr) {
                     final InvocationExpr invocationExpr = ((InvocationExpr) parentExpr);
@@ -108,6 +114,7 @@ public class SimpleXorCipher implements FlowPass {
                     final int index = parentExpr.indexOf(constantExpr);
                     parentExpr.writeAt(invocation, index);
                 }*/
+
 
 
             }

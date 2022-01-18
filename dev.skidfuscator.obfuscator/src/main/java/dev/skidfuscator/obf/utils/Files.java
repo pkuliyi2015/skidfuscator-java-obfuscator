@@ -48,7 +48,9 @@ public class Files {
                         parent = parent.substring(0, parent.lastIndexOf('/'));
                         if (dirsVisited.add(parent)) {
                             toAdd.add(0, parent + '/');
-                        } else break;
+                        } else {
+                            break;
+                        }
                     } while (parent.contains("/"));
                     // Put directories in order of depth
                     for (String dir : toAdd) {

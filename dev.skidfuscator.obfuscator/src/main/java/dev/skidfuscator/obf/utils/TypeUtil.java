@@ -189,8 +189,9 @@ public class TypeUtil {
 	 * @return Array depth.
 	 */
 	public static int getArrayDepth(Type type) {
-		if (type.getSort() == Type.ARRAY)
-			return type.getDimensions();
+		if (type.getSort() == Type.ARRAY) {
+            return type.getDimensions();
+        }
 		return 0;
 	}
 
@@ -201,9 +202,11 @@ public class TypeUtil {
 	 * @return {@code true} if it matches the class name of a primitive type.
 	 */
 	public static boolean isPrimitiveClassName(String desc) {
-		for (Type prim : PRIMITIVES)
-			if (prim.getClassName().equals(desc))
-				return true;
+		for (Type prim : PRIMITIVES) {
+            if (prim.getClassName().equals(desc)) {
+                return true;
+            }
+        }
 		return false;
 	}
 
@@ -214,9 +217,11 @@ public class TypeUtil {
 	 * @return Internal name.
 	 */
 	public static String classToPrimitive(String desc) {
-		for (Type prim : PRIMITIVES)
-			if (prim.getClassName().equals(desc))
-				return prim.getInternalName();
+		for (Type prim : PRIMITIVES) {
+            if (prim.getClassName().equals(desc)) {
+                return prim.getInternalName();
+            }
+        }
 		throw new IllegalArgumentException("Descriptor was not a primitive class name!");
 	}
 }

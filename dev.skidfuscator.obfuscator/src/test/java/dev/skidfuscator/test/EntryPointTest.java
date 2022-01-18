@@ -13,10 +13,10 @@ import org.mapleir.Main;
 
 public class EntryPointTest {
 
-    @Test
+//    @Test
     public void test2() throws Exception {
         final String path = "src/test/resources/test.jar";
-        Bootstrapper.main(new String[]{path});
+//        Bootstrapper.main(new String[]{path});
         //Bootstrapper.main(new String[]{"C:\\Users\\sanja\\Documents\\GitHub\\SkidfuscatorV2\\dev.skidfuscator.obfuscator\\src\\test\\resources\\test.jar"});
     }
 

@@ -47,8 +47,9 @@ public class PhantomResolvingJarDumper implements JarDumper {
 	 */
 	@Override
 	public void dump(File file) throws IOException {
-		if (file.exists())
-			file.delete();
+		if (file.exists()) {
+            file.delete();
+        }
 		file.createNewFile();
 		JarOutputStream jos = new JarOutputStream(new FileOutputStream(file));
 		int classesDumped = 0;
@@ -59,8 +60,9 @@ public class PhantomResolvingJarDumper implements JarDumper {
 		for (JarResource res : contents.getResourceContents()) {
 			resourcesDumped += dumpResource(jos, res.getName(), res.getData());
 		}
-		if(!Debug.debugging)
-			System.out.println("Dumped " + classesDumped + " classes and " + resourcesDumped + " resources to " + file.getAbsolutePath());
+		if(!Debug.debugging) {
+            System.out.println("Dumped " + classesDumped + " classes and " + resourcesDumped + " resources to " + file.getAbsolutePath());
+        }
 		
 		jos.close();
 	}

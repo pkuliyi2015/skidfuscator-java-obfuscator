@@ -35,20 +35,24 @@ public class ConditionMutatorPass implements FlowPass {
     @Override
     public void pass(SkidSession session, SkidMethod method) {
         for (SkidGraph methodNode : method.getMethodNodes()) {
-            if (methodNode.getNode().isAbstract() || methodNode.isInit())
+            if (methodNode.getNode().isAbstract() || methodNode.isInit()) {
                 continue;
+            }
 
             final ControlFlowGraph cfg = session.getCxt().getIRCache().get(methodNode.getNode());
 
-            if (cfg == null)
+            if (cfg == null) {
                 continue;
+            }
 
             for (BasicBlock parent : new HashSet<>(cfg.vertices())) {
-                if (parent.size() == 0)
+                if (parent.size() == 0) {
                     continue;
+                }
 
-                if (methodNode.getNode().node.instructions.size() > 10000)
+                if (methodNode.getNode().node.instructions.size() > 10000) {
                     continue;
+                }
 
                 final Stmt stmt = parent.get(parent.size() - 1);
 
@@ -65,8 +69,9 @@ public class ConditionMutatorPass implements FlowPass {
                         .findFirst()
                         .orElse(null);
 
-                if (edge == null)
+                if (edge == null) {
                     continue;
+                }
 
                 final ConditionalJumpStmt jump = (ConditionalJumpStmt) stmt;
                 final BasicBlock target = jump.getTrueSuccessor();

@@ -54,8 +54,9 @@ public class SkidGraph implements Attributable {
     }
 
     public void render(final ControlFlowGraph cfg) {
-        if (cfg == null || cfg.vertices().size() == 0)
+        if (cfg == null || cfg.vertices().size() == 0) {
             return;
+        }
 
         // Phase 1: populate
         populate(cfg);
@@ -71,8 +72,9 @@ public class SkidGraph implements Attributable {
     }
 
     public void postlinearize(final ControlFlowGraph cfg) {
-        if (cfg == null || cfg.vertices().size() == 0 || local == null)
+        if (cfg == null || cfg.vertices().size() == 0 || local == null) {
             return;
+        }
 
         final Set<BasicBlock> toVisit = cfg.vertices()
                 .stream()
@@ -105,8 +107,9 @@ public class SkidGraph implements Attributable {
         }*/
 
         for (BasicBlock vertex : new HashSet<>(cfg.vertices())) {
-            if (vertex instanceof FakeBlock)
+            if (vertex instanceof FakeBlock) {
                 continue;
+            }
 
             cfg.getEdges(vertex).stream()
                     .filter(e -> e instanceof ImmediateEdge)
@@ -216,12 +219,18 @@ public class SkidGraph implements Attributable {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             LinearLink that = (LinearLink) o;
 
-            if (in != null ? !in.equals(that.in) : that.in != null) return false;
+            if (in != null ? !in.equals(that.in) : that.in != null) {
+                return false;
+            }
             return out != null ? out.equals(that.out) : that.out == null;
         }
 
@@ -357,8 +366,9 @@ public class SkidGraph implements Attributable {
             */
         }
 
-        if (stmt.getDefaultTarget() == null || stmt.getDefaultTarget() == block)
+        if (stmt.getDefaultTarget() == null || stmt.getDefaultTarget() == block) {
             return;
+        }
 
         final SkidBlock dflt = getBlock(stmt.getDefaultTarget());
         dflt.addSeedLoader(0, local, seededBlock.getSeed(), dflt.getSeed());
